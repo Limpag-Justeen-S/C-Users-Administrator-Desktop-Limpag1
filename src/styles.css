@@ -1,0 +1,20 @@
+/* Global theme variables and utilities */
+:root{
+	--primary: #ff00ff; /* fuchsia */
+	--dark: #1b1b1b; /* dark gray */
+	--bg: var(--dark);
+	--text: #f5f5f5;
+	--muted: #9a9a9a;
+}
+
+html,body{height:120%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Segoe UI, Roboto, cursive, sans-serif}
+
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.container{max-width:1100px;margin:0 auto;padding:1rem}
+
+@media (max-width:600px){
+  .container{padding:0.5rem}
+}

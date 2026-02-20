@@ -1,0 +1,88 @@
+<nav class="navbar">
+  <button class="nav-toggle" (click)="toggleNav()">☰</button>
+
+  <div class="nav-links" [class.open]="isNavOpen()">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+
+  <div class="navbar-center">
+    <div class="brand">Shop Hub</div>
+    <input 
+      type="search" 
+      class="search-input" 
+      placeholder="Search..."
+      (input)="searchText.set($event.target.value)">
+  </div>
+
+  <div class="cart-icon">
+    <button class="cart-btn" (click)="toggleCart()">
+      🛒 <span class="cart-count">{{ cartCount() }}</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Cart Modal -->
+@if (isCartOpen()) {
+  <div class="cart-modal">
+    <div class="cart-content">
+      <div class="cart-header">
+        <h2>Shopping Cart</h2>
+        <button class="close-btn" (click)="toggleCart()">✕</button>
+      </div>
+
+      @if (cart().length === 0) {
+        <div class="cart-empty">
+          <p>Your cart is empty</p>
+        </div>
+      } @else {
+        <div class="cart-items">
+          @for (item of cart(); track item.name) {
+            <div class="cart-item">
+              <div class="item-info">
+                <span class="item-icon">{{ item.icon }}</span>
+                <div class="item-details">
+                  <h4>{{ item.name }}</h4>
+                  <p class="item-price">${{ item.price.toFixed(2) }}</p>
+                </div>
+              </div>
+              <div class="item-controls">
+                <button class="qty-btn" (click)="updateQuantity(item.name, (item.qty || 0) - 1)">−</button>
+                <span class="qty-display">{{ item.qty }}</span>
+                <button class="qty-btn" (click)="updateQuantity(item.name, (item.qty || 0) + 1)">+</button>
+                <span class="item-total">${{ (item.price * (item.qty || 0)).toFixed(2) }}</span>
+                <button class="remove-btn" (click)="removeFromCart(item.name)">🗑️</button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="cart-footer">
+          <div class="cart-total">
+            <span>Total:</span>
+            <span class="total-amount">${{ cartTotal().toFixed(2) }}</span>
+          </div>
+          <button class="checkout-btn">Checkout</button>
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<section class="shop">
+  <h2>Shop</h2>
+
+  <div class="products-grid">
+    @for (product of filteredProducts(); track product.name) {
+      <div class="product">
+        <div class="thumb">{{ product.icon }}</div>
+        <h3>{{ product.name }}</h3>
+        <p class="price">${{ product.price.toFixed(2) }}</p>
+        <button class="buy" (click)="addToCart(product)">Add to Cart</button>
+      </div>
+    }
+  </div>
+</section>
